@@ -5,7 +5,7 @@ import os
 from webserver import keep_alive
 
 # Fill in your token here
-token = os.environ.get('token'))
+token = os.environ.get('token')
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
