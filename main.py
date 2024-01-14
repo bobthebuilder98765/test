@@ -69,14 +69,9 @@ async def on_interaction(interaction: discord.Interaction):
                 if not interaction.response.is_done():
                     await interaction.response.send_message("You need to be in a voice channel to use this command.", ephemeral=True)
         else:
-            # Acknowledge the interaction
-            await interaction.response.defer()
-
-            # Get the channel using its ID
-            channel = bot.get_channel(1155946685676146709)
-
-            # Send the message to the specific channel
-            await channel.send("You need to be in a voice channel to use this command.", ephemeral=True)
+            # Check if the interaction is already responded to
+            if not interaction.response.is_done():
+                await interaction.response.send_message("You need to be in a voice channel to use this command.", ephemeral=True)
 
 keep_alive()
 bot.run(token)
