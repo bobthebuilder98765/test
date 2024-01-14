@@ -11,8 +11,14 @@ token = os.environ.get('token')
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 games = {
-    # ... (Your existing games dictionary)
-}
+  "minecraft": {"style": discord.ButtonStyle.blurple, "role": "Minecraft", "emoji": "⛏️"},
+  "fortnite": {"style": discord.ButtonStyle.blurple, "role": "Fortnite", "emoji": "🌪️"},
+  "scribble": {"style": discord.ButtonStyle.blurple, "role": "Scribble", "emoji": "🖍️"},
+  "gartic phone": {"style": discord.ButtonStyle.blurple, "role": "Gartic Phone", "emoji": "📱"},
+  "valorant": {"style": discord.ButtonStyle.blurple, "role": "Valorant", "emoji": "🔫"},
+  "cs": {"style": discord.ButtonStyle.blurple, "role": "CS", "emoji": "💣"},
+  "mikmak": {"style": discord.ButtonStyle.blurple, "role": "Mikmak", "emoji": "🍊"},
+  "Lethal Comapny" : {"style": discord.ButtonStyle.blurple, "role": "Lethal Comapny", "emoji":"👹"},
 
 
 class GameButtonView(View):
@@ -70,7 +76,7 @@ async def on_interaction(interaction: discord.Interaction):
                     await message.delete()
         else:
             # Get the channel using its ID
-            channel = bot.get_channel(1156180116024590396)
+            channel = bot.get_channel(1155946685676146709)
 
             # Acknowledge the interaction
             await interaction.response.defer()
