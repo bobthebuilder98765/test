@@ -19,6 +19,7 @@ games = {
   "cs": {"style": discord.ButtonStyle.blurple, "role": "CS", "emoji": "💣"},
   "mikmak": {"style": discord.ButtonStyle.blurple, "role": "Mikmak", "emoji": "🍊"},
   "Lethal Comapny" : {"style": discord.ButtonStyle.blurple, "role": "Lethal Comapny", "emoji":"👹"},
+}
 
 
 class GameButtonView(View):
