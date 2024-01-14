@@ -9,15 +9,11 @@ token = os.environ.get('token')
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
+
 games = {
     "minecraft": {"style": discord.ButtonStyle.blurple, "role": "Minecraft", "emoji": "⛏️"},
     "fortnite": {"style": discord.ButtonStyle.blurple, "role": "Fortnite", "emoji": "🌪️"},
-    "scribble": {"style": discord.ButtonStyle.blurple, "role": "Scribble", "emoji": "🖍️"},
-    "gartic phone": {"style": discord.ButtonStyle.blurple, "role": "Gartic Phone", "emoji": "📱"},
-    "valorant": {"style": discord.ButtonStyle.blurple, "role": "Valorant", "emoji": "🔫"},
-    "cs": {"style": discord.ButtonStyle.blurple, "role": "CS", "emoji": "💣"},
-    "mikmak": {"style": discord.ButtonStyle.blurple, "role": "Mikmak", "emoji": "🍊"},
-    "Lethal Comapny": {"style": discord.ButtonStyle.blurple, "role": "Lethal Comapny", "emoji": "👹"},
+    # Add other games here...
 }
 
 class GameButtonView(View):
@@ -39,6 +35,7 @@ async def on_interaction(interaction: discord.Interaction):
             voice_channel = interaction.user.voice.channel
             role_name = games[game]['role']
             role = discord.utils.get(interaction.guild.roles, name=role_name)
+
             if role:
                 users_with_role = [member.mention for member in role.members if member != interaction.user]
                 users_with_role_str = ' '.join(users_with_role)
@@ -51,24 +48,20 @@ async def on_interaction(interaction: discord.Interaction):
                 await interaction.response.defer()
 
                 # Send the message to the specific channel
-                channel = bot.get_channel(1156180116024590396)
-                await channel.send(embed=embed)
-            else:
-                # Acknowledge the interaction
-                await interaction.response.send_message("You need to be in a voice channel to use this command.", ephemeral=True)
+                channel_id = 1156180116024590396  # Change this to your desired channel ID
+                channel = bot.get_channel(channel_id)
 
-                # Send the message to the specific channel
-                channel = bot.get_channel(1155946685676146709)
-                await channel.send("You need to be in a voice channel to use this command.")
+                # Check if the message has already been sent
+                messages = await channel.history().flatten()
+                sent_messages = [msg for msg in messages if msg.embeds and msg.embeds[0].title == embed.title]
+
+                if not sent_messages:
+                    await channel.send(embed=embed)
+            else:
+                await interaction.response.send_message("You need to be in a voice channel to use this command.", ephemeral=True)
         else:
-            # Acknowledge the interaction
+            # Acknowledge the interaction and send a hidden message to the user
             await interaction.response.send_message("You need to be in a voice channel to use this command.", ephemeral=True)
 
-            # Send the message to the specific channel
-            channel = bot.get_channel(1155946685676146709)
-            await channel.send("You need to be in a voice channel to use this command.")
-
 keep_alive()
-
-# Running the bot
 bot.run(token)
