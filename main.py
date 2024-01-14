@@ -65,6 +65,5 @@ async def on_interaction(interaction: discord.Interaction):
             else:
                 await interaction.response.send_message("You need to be in a voice channel to use this command.", ephemeral=True)
 
-
 keep_alive()
 bot.run(token)
