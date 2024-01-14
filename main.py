@@ -10,14 +10,14 @@ token = os.environ.get('token')
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 games = {
-  "minecraft": {"style": discord.ButtonStyle.green, "role": "Minecraft", "emoji": "⛏️"},
+  "minecraft": {"style": discord.ButtonStyle.blurple, "role": "Minecraft", "emoji": "⛏️"},
   "fortnite": {"style": discord.ButtonStyle.blurple, "role": "Fortnite", "emoji": "🌪️"},
-  "scribble": {"style": discord.ButtonStyle.blurpl, "role": "Scribble", "emoji": "🖍️"},
-  "gartic phone": {"style": discord.ButtonStyle.blurpl, "role": "Gartic Phone", "emoji": "📱"},
-  "valorant": {"style": discord.ButtonStyle.blurpl, "role": "Valorant", "emoji": "🔫"},
-  "cs": {"style": discord.ButtonStyle.blurpl, "role": "CS", "emoji": "💣"},
-  "mikmak": {"style": discord.ButtonStyle.blurpl, "role": "Mikmak", "emoji": "🍊"},
-  "Lethal Comapny" : {"style": discord.ButtonStyle.blurpl, "role": "Lethal Comapny"},
+  "scribble": {"style": discord.ButtonStyle.blurple, "role": "Scribble", "emoji": "🖍️"},
+  "gartic phone": {"style": discord.ButtonStyle.blurple, "role": "Gartic Phone", "emoji": "📱"},
+  "valorant": {"style": discord.ButtonStyle.blurple, "role": "Valorant", "emoji": "🔫"},
+  "cs": {"style": discord.ButtonStyle.blurple, "role": "CS", "emoji": "💣"},
+  "mikmak": {"style": discord.ButtonStyle.blurple, "role": "Mikmak", "emoji": "🍊"},
+  "Lethal Comapny" : {"style": discord.ButtonStyle.blurple, "role": "Lethal Comapny"},
 
 
     #"role_button": {"style": discord.ButtonStyle.ButtonStyle, "role": "RoleButton", "emoji": ":Emoji:"}
