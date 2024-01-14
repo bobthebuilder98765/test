@@ -1,0 +1,5 @@
+discord
+discord.ui
+discord.py
+python-dotenv
+flask
