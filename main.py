@@ -64,9 +64,7 @@ async def on_interaction(interaction: discord.Interaction):
                     await channel.send(embed=embed)
             else:
                 await interaction.response.send_message("You need to be in a voice channel to use this command.", ephemeral=True)
-        else:
-            # Acknowledge the interaction and send a hidden message to the user
-            await interaction.response.send_message("You need to be in a voice channel to use this command.", ephemeral=True)
+
 
 keep_alive()
 bot.run(token)
