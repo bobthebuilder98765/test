@@ -2,6 +2,7 @@ import discord
 from discord.ui import Button, View
 from discord.ext import commands
 import os
+import asyncio  # Import asyncio module
 from webserver import keep_alive
 
 # Fill in your token here
@@ -10,17 +11,7 @@ token = os.environ.get('token')
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 games = {
-  "minecraft": {"style": discord.ButtonStyle.blurple, "role": "Minecraft", "emoji": "⛏️"},
-  "fortnite": {"style": discord.ButtonStyle.blurple, "role": "Fortnite", "emoji": "🌪️"},
-  "scribble": {"style": discord.ButtonStyle.blurple, "role": "Scribble", "emoji": "🖍️"},
-  "gartic phone": {"style": discord.ButtonStyle.blurple, "role": "Gartic Phone", "emoji": "📱"},
-  "valorant": {"style": discord.ButtonStyle.blurple, "role": "Valorant", "emoji": "🔫"},
-  "cs": {"style": discord.ButtonStyle.blurple, "role": "CS", "emoji": "💣"},
-  "mikmak": {"style": discord.ButtonStyle.blurple, "role": "Mikmak", "emoji": "🍊"},
-  "Lethal Comapny" : {"style": discord.ButtonStyle.blurple, "role": "Lethal Comapny", "emoji":"👹"},
-
-
-    #"role_button": {"style": discord.ButtonStyle.ButtonStyle, "role": "RoleButton", "emoji": ":Emoji:"}
+    # ... (Your existing games dictionary)
 }
 
 
@@ -31,13 +22,10 @@ class GameButtonView(View):
             self.add_item(Button(style=games[game]['style'], label=game, custom_id=game, emoji=games[game]['emoji']))
 
 
-
-
 @bot.command()
 async def spawn(ctx):
     view = GameButtonView()
     await ctx.send("Click a button to find players for a game.", view=view)
-
 
 
 @bot.event
@@ -61,7 +49,11 @@ async def on_interaction(interaction: discord.Interaction):
                 await interaction.response.defer()
 
                 # Send the message to the specific channel
-                await channel.send(embed=embed)
+                message = await channel.send(embed=embed)
+
+                # Auto delete the message after 10 seconds
+                await asyncio.sleep(10)
+                await message.delete()
             else:
                 # Get the channel using its ID
                 channel = bot.get_channel(1156180116024590396)
@@ -70,16 +62,26 @@ async def on_interaction(interaction: discord.Interaction):
                 await interaction.response.defer()
 
                 # Send the message to the specific channel
+                await channel.send("You need to be in a voice channel to use this command. " + interaction.user.mention)
+
+                # Auto delete the message after 10 seconds
+                await asyncio.sleep(10)
+                async for message in channel.history(limit=1):
+                    await message.delete()
         else:
             # Get the channel using its ID
+            channel = bot.get_channel(1156180116024590396)
+
+            # Acknowledge the interaction
             await interaction.response.defer()
 
-            # Get the channel using its ID
-            channel = bot.get_channel(1155946685676146709)
+            # Send the message to the specific channel
+            await channel.send("You need to be in a voice channel to use this command. " + interaction.user.mention)
 
-            # Send an ephemeral message to the user
-            await interaction.response.send_message("You need to be in a voice channel to use this command.", ephemeral=True)
-
+            # Auto delete the message after 10 seconds
+            await asyncio.sleep(10)
+            async for message in channel.history(limit=1):
+                await message.delete()
 
 
 keep_alive()
