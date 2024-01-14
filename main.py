@@ -13,7 +13,12 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 games = {
     "minecraft": {"style": discord.ButtonStyle.blurple, "role": "Minecraft", "emoji": "⛏️"},
     "fortnite": {"style": discord.ButtonStyle.blurple, "role": "Fortnite", "emoji": "🌪️"},
-    # Add other games here...
+    "scribble": {"style": discord.ButtonStyle.blurple, "role": "Scribble", "emoji": "🖍️"},
+    "gartic phone": {"style": discord.ButtonStyle.blurple, "role": "Gartic Phone", "emoji": "📱"},
+    "valorant": {"style": discord.ButtonStyle.blurple, "role": "Valorant", "emoji": "🔫"},
+    "cs": {"style": discord.ButtonStyle.blurple, "role": "CS", "emoji": "💣"},
+    "mikmak": {"style": discord.ButtonStyle.blurple, "role": "Mikmak", "emoji": "🍊"},
+    "Lethal Comapny": {"style": discord.ButtonStyle.blurple, "role": "Lethal Comapny", "emoji": "👹"},
 }
 
 class GameButtonView(View):
