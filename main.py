@@ -19,6 +19,11 @@ games = {
   "cs": {"style": discord.ButtonStyle.blurple, "role": "CS", "emoji": "💣"},
   "mikmak": {"style": discord.ButtonStyle.blurple, "role": "Mikmak", "emoji": "🍊"},
   "Lethal Comapny" : {"style": discord.ButtonStyle.blurple, "role": "Lethal Comapny", "emoji":"👹"},
+  "VR GAMES" : {"style": discord.ButtonStyle.blurple, "role": "VR GAMES", "emoji":"👓"},
+  "Brawlhalla" : {"style": discord.ButtonStyle.blurple, "role": "Brawlhalla", "emoji":"⚔️"},
+  "ARMA III" : {"style": discord.ButtonStyle.blurple, "role": "ARMA III", "emoji":"🪖"},
+
+
 }
 
 
