@@ -63,9 +63,7 @@ async def on_interaction(interaction: discord.Interaction):
                 # Send the message to the specific channel
                 message = await channel.send(embed=embed)
 
-                # Auto delete the message after 10 seconds
-                await asyncio.sleep(10)
-                await message.delete()
+
             else:
                 # Get the channel using its ID
                 channel = bot.get_channel(1156180116024590396)
