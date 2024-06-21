@@ -17,7 +17,6 @@ games = {
   "gartic phone": {"style": discord.ButtonStyle.blurple, "role": "Garatic Phone", "emoji": "📱"},
   "valorant": {"style": discord.ButtonStyle.blurple, "role": "Valorant", "emoji": "🔫"},
   "cs": {"style": discord.ButtonStyle.blurple, "role": "CS:GO", "emoji": "💣"},
-  "mikmak": {"style": discord.ButtonStyle.blurple, "role": "Mikmak", "emoji": "🍊"},
   "Lethal Comapny" : {"style": discord.ButtonStyle.blurple, "role": "Lethal Comapny", "emoji":"👹"},
   "VR GAMES" : {"style": discord.ButtonStyle.blurple, "role": "VR GAMES", "emoji":"👓"},
   "Brawlhalla" : {"style": discord.ButtonStyle.blurple, "role": "Brawlhalla", "emoji":"⚔️"},
