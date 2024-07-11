@@ -11,20 +11,19 @@ token = os.environ.get('token')
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 games = {
-  "minecraft": {"style": discord.ButtonStyle.blurple, "role": "Minecraft", "emoji": "⛏️"},
-  "fortnite": {"style": discord.ButtonStyle.blurple, "role": "Fortnite", "emoji": "🌪️"},
-  "scribble": {"style": discord.ButtonStyle.blurple, "role": "Scribble", "emoji": "🖍️"},
-  "gartic phone": {"style": discord.ButtonStyle.blurple, "role": "Garatic Phone", "emoji": "📱"},
-  "valorant": {"style": discord.ButtonStyle.blurple, "role": "Valorant", "emoji": "🔫"},
-  "cs": {"style": discord.ButtonStyle.blurple, "role": "CS:GO", "emoji": "💣"},
-  "Lethal Comapny" : {"style": discord.ButtonStyle.blurple, "role": "Lethal Comapny", "emoji":"👹"},
-  "VR GAMES" : {"style": discord.ButtonStyle.blurple, "role": "VR GAMES", "emoji":"👓"},
-  "Brawlhalla" : {"style": discord.ButtonStyle.blurple, "role": "Brawlhalla", "emoji":"⚔️"},
-  "ARMA III" : {"style": discord.ButtonStyle.blurple, "role": "ARMA III", "emoji":"🪖"}
-
-
+    "minecraft": {"style": discord.ButtonStyle.blurple, "role": "Minecraft", "emoji": "⛏️"},
+    "fortnite": {"style": discord.ButtonStyle.blurple, "role": "Fortnite", "emoji": "🌪️"},
+    "scribble": {"style": discord.ButtonStyle.blurple, "role": "Scribble", "emoji": "🖍️"},
+    "gartic phone": {"style": discord.ButtonStyle.blurple, "role": "Garatic Phone", "emoji": "📱"},
+    "valorant": {"style": discord.ButtonStyle.blurple, "role": "Valorant", "emoji": "🔫"},
+    "cs": {"style": discord.ButtonStyle.blurple, "role": "CS:GO", "emoji": "💣"},
+    "Lethal Comapny" : {"style": discord.ButtonStyle.blurple, "role": "Lethal Comapny", "emoji":"👹"},
+    "VR GAMES" : {"style": discord.ButtonStyle.blurple, "role": "VR GAMES", "emoji":"👓"},
+    "Brawlhalla" : {"style": discord.ButtonStyle.blurple, "role": "Brawlhalla", "emoji":"⚔️"},
+    "ARMA III" : {"style": discord.ButtonStyle.blurple, "role": "ARMA III", "emoji":"🪖"},
+    "DayZ": {"style": discord.ButtonStyle.blurple, "role": "DayZ", "emoji": "🧟"},
+    "Stick Fight: The Game": {"style": discord.ButtonStyle.blurple, "role": "Stick Fight: The Game", "emoji": "👨‍🦯"}
 }
-
 
 class GameButtonView(View):
     def __init__(self):
@@ -32,12 +31,10 @@ class GameButtonView(View):
         for game, style in games.items():
             self.add_item(Button(style=games[game]['style'], label=game, custom_id=game, emoji=games[game]['emoji']))
 
-
 @bot.command()
 async def spawn(ctx):
     view = GameButtonView()
     await ctx.send("Click a button to find players for a game.", view=view)
-
 
 @bot.event
 async def on_interaction(interaction: discord.Interaction):
@@ -61,7 +58,6 @@ async def on_interaction(interaction: discord.Interaction):
 
                 # Send the message to the specific channel
                 message = await channel.send(embed=embed)
-
 
             else:
                 # Get the channel using its ID
@@ -91,7 +87,6 @@ async def on_interaction(interaction: discord.Interaction):
             await asyncio.sleep(10)
             async for message in channel.history(limit=1):
                 await message.delete()
-
 
 keep_alive()
 
