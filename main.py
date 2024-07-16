@@ -22,7 +22,8 @@ games = {
     "Brawlhalla" : {"style": discord.ButtonStyle.blurple, "role": "Brawlhalla", "emoji":"⚔️"},
     "ARMA III" : {"style": discord.ButtonStyle.blurple, "role": "ARMA III", "emoji":"🪖"},
     "DayZ": {"style": discord.ButtonStyle.blurple, "role": "DayZ", "emoji": "🧟"},
-    "Stick Fight: The Game": {"style": discord.ButtonStyle.blurple, "role": "Stick Fight: The Game", "emoji": "👨‍🦯"}
+    "Stick Fight: The Game": {"style": discord.ButtonStyle.blurple, "role": "Stick Fight: The Game", "emoji": "👨‍🦯"},
+    "The Finals": {"style": discord.ButtonStyle.blurple, "role": "The Finals", "emoji": "合"}
 }
 
 class GameButtonView(View):
