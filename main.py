@@ -23,7 +23,7 @@ games = {
     "ARMA III" : {"style": discord.ButtonStyle.blurple, "role": "ARMA III", "emoji":"🪖"},
     "DayZ": {"style": discord.ButtonStyle.blurple, "role": "DayZ", "emoji": "🧟"},
     "Stick Fight: The Game": {"style": discord.ButtonStyle.blurple, "role": "Stick Fight: The Game", "emoji": "👨‍🦯"},
-    "The Finals": {"style": discord.ButtonStyle.blurple, "role": "The Finals", "emoji": "合"}
+    "The Finals": {"style": discord.ButtonStyle.blurple, "role": "The Finals", "emoji": "🧱"}
 }
 
 class GameButtonView(View):
