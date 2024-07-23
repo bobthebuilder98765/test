@@ -26,6 +26,7 @@ games = {
     "The Finals": {"style": discord.ButtonStyle.blurple, "role": "The Finals", "emoji": "🧱"},
     "Tank Team": {"style": discord.ButtonStyle.blurple, "role": "Tank Team", "emoji": "🚛"}
 }
+
 class GameButtonView(View):
     def __init__(self):
         super().__init__()
@@ -37,13 +38,6 @@ async def spawn(ctx):
     view = GameButtonView()
     await ctx.send("Click a button to find players for a game.", view=view)
 
-async def role_autocomplete(interaction: discord.Interaction, current: str) -> list[app_commands.Choice[str]]:
-    roles = interaction.guild.roles
-    return [
-        app_commands.Choice(name=role.name, value=str(role.id))
-        for role in roles if current.lower() in role.name.lower()
-    ][:25]  # Discord limits to 25 choices
-
 @bot.tree.command(name="addbutton", description="Add a new game button")
 @app_commands.describe(
     name="The name of the game",
@@ -53,7 +47,7 @@ async def role_autocomplete(interaction: discord.Interaction, current: str) -> l
 async def addbutton(
     interaction: discord.Interaction, 
     name: str, 
-    role: app_commands.Transform[discord.Role, app_commands.RoleConverter],
+    role: discord.Role,
     emoji: str
 ):
     games[name] = {"style": discord.ButtonStyle.blurple, "role": role.name, "emoji": emoji}
