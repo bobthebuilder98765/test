@@ -38,48 +38,50 @@ async def spawn(ctx):
     view = GameButtonView()
     await ctx.send("Click a button to find players for a game.", view=view)
 
+class RoleSelect(Select):
+    def __init__(self, roles, name, emoji):
+        options = [discord.SelectOption(label=role.name, value=str(role.id)) for role in roles if role.name != "@everyone"]
+        super().__init__(placeholder="Select a role for the game", options=options)
+        self.name = name
+        self.emoji = emoji
+
+    async def callback(self, interaction: discord.Interaction):
+        role_id = int(self.values[0])
+        role = interaction.guild.get_role(role_id)
+        games[self.name] = {"style": discord.ButtonStyle.blurple, "role": role.name, "emoji": self.emoji}
+        await interaction.response.edit_message(content=f"Added new game button: {self.name} with role: {role.name} and emoji: {self.emoji}", view=None)
+
 @bot.tree.command(name="addbutton", description="Add a new game button")
 @app_commands.describe(
     name="The name of the game",
     emoji="The emoji for the game button"
 )
 async def addbutton(interaction: discord.Interaction, name: str, emoji: str):
+    await interaction.response.defer(ephemeral=True)
     roles = interaction.guild.roles
-    role_select = Select(
-        placeholder="Select a role for the game",
-        options=[discord.SelectOption(label=role.name, value=role.id) for role in roles if role.name != "@everyone"]
-    )
-
-    async def role_callback(interaction: discord.Interaction):
-        role_id = int(role_select.values[0])
-        role = interaction.guild.get_role(role_id)
-        games[name] = {"style": discord.ButtonStyle.blurple, "role": role.name, "emoji": emoji}
-        await interaction.response.send_message(f"Added new game button: {name} with role: {role.name} and emoji: {emoji}")
-
-    role_select.callback = role_callback
     view = View()
-    view.add_item(role_select)
-    await interaction.response.send_message("Select a role for the new game button:", view=view)
+    view.add_item(RoleSelect(roles, name, emoji))
+    await interaction.followup.send("Select a role for the new game button:", view=view, ephemeral=True)
+
+class GameSelect(Select):
+    def __init__(self):
+        options = [discord.SelectOption(label=game, value=game) for game in games.keys()]
+        super().__init__(placeholder="Select a game button to remove", options=options)
+
+    async def callback(self, interaction: discord.Interaction):
+        game = self.values[0]
+        if game in games:
+            del games[game]
+            await interaction.response.edit_message(content=f"Removed game button: {game}", view=None)
+        else:
+            await interaction.response.edit_message(content=f"Game button {game} not found.", view=None)
 
 @bot.tree.command(name="removebutton", description="Remove an existing game button")
 async def removebutton(interaction: discord.Interaction):
-    game_select = Select(
-        placeholder="Select a game button to remove",
-        options=[discord.SelectOption(label=game, value=game) for game in games.keys()]
-    )
-
-    async def game_callback(interaction: discord.Interaction):
-        game = game_select.values[0]
-        if game in games:
-            del games[game]
-            await interaction.response.send_message(f"Removed game button: {game}")
-        else:
-            await interaction.response.send_message(f"Game button {game} not found.")
-
-    game_select.callback = game_callback
+    await interaction.response.defer(ephemeral=True)
     view = View()
-    view.add_item(game_select)
-    await interaction.response.send_message("Select a game button to remove:", view=view)
+    view.add_item(GameSelect())
+    await interaction.followup.send("Select a game button to remove:", view=view, ephemeral=True)
 
 @bot.event
 async def on_interaction(interaction: discord.Interaction):
