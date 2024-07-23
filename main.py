@@ -1,6 +1,6 @@
 import discord
 from discord import app_commands
-from discord.ui import Button, View, Select
+from discord.ui import Button, View
 from discord.ext import commands
 import os
 import asyncio
@@ -26,7 +26,6 @@ games = {
     "The Finals": {"style": discord.ButtonStyle.blurple, "role": "The Finals", "emoji": "🧱"},
     "Tank Team": {"style": discord.ButtonStyle.blurple, "role": "Tank Team", "emoji": "🚛"}
 }
-
 class GameButtonView(View):
     def __init__(self):
         super().__init__()
@@ -38,50 +37,39 @@ async def spawn(ctx):
     view = GameButtonView()
     await ctx.send("Click a button to find players for a game.", view=view)
 
-class RoleSelect(Select):
-    def __init__(self, roles, name, emoji):
-        options = [discord.SelectOption(label=role.name, value=str(role.id)) for role in roles if role.name != "@everyone"]
-        super().__init__(placeholder="Select a role for the game", options=options)
-        self.name = name
-        self.emoji = emoji
-
-    async def callback(self, interaction: discord.Interaction):
-        role_id = int(self.values[0])
-        role = interaction.guild.get_role(role_id)
-        games[self.name] = {"style": discord.ButtonStyle.blurple, "role": role.name, "emoji": self.emoji}
-        await interaction.response.edit_message(content=f"Added new game button: {self.name} with role: {role.name} and emoji: {self.emoji}", view=None)
+async def role_autocomplete(interaction: discord.Interaction, current: str) -> list[app_commands.Choice[str]]:
+    roles = interaction.guild.roles
+    return [
+        app_commands.Choice(name=role.name, value=str(role.id))
+        for role in roles if current.lower() in role.name.lower()
+    ][:25]  # Discord limits to 25 choices
 
 @bot.tree.command(name="addbutton", description="Add a new game button")
 @app_commands.describe(
     name="The name of the game",
+    role="The role for the game",
     emoji="The emoji for the game button"
 )
-async def addbutton(interaction: discord.Interaction, name: str, emoji: str):
-    await interaction.response.defer(ephemeral=True)
-    roles = interaction.guild.roles
-    view = View()
-    view.add_item(RoleSelect(roles, name, emoji))
-    await interaction.followup.send("Select a role for the new game button:", view=view, ephemeral=True)
-
-class GameSelect(Select):
-    def __init__(self):
-        options = [discord.SelectOption(label=game, value=game) for game in games.keys()]
-        super().__init__(placeholder="Select a game button to remove", options=options)
-
-    async def callback(self, interaction: discord.Interaction):
-        game = self.values[0]
-        if game in games:
-            del games[game]
-            await interaction.response.edit_message(content=f"Removed game button: {game}", view=None)
-        else:
-            await interaction.response.edit_message(content=f"Game button {game} not found.", view=None)
+async def addbutton(
+    interaction: discord.Interaction, 
+    name: str, 
+    role: app_commands.Transform[discord.Role, app_commands.RoleConverter],
+    emoji: str
+):
+    games[name] = {"style": discord.ButtonStyle.blurple, "role": role.name, "emoji": emoji}
+    await interaction.response.send_message(f"Added new game button: {name} with role: {role.name} and emoji: {emoji}", ephemeral=True)
 
 @bot.tree.command(name="removebutton", description="Remove an existing game button")
-async def removebutton(interaction: discord.Interaction):
-    await interaction.response.defer(ephemeral=True)
-    view = View()
-    view.add_item(GameSelect())
-    await interaction.followup.send("Select a game button to remove:", view=view, ephemeral=True)
+@app_commands.describe(game="The game button to remove")
+@app_commands.choices(game=[
+    app_commands.Choice(name=game, value=game) for game in games.keys()
+])
+async def removebutton(interaction: discord.Interaction, game: str):
+    if game in games:
+        del games[game]
+        await interaction.response.send_message(f"Removed game button: {game}", ephemeral=True)
+    else:
+        await interaction.response.send_message(f"Game button {game} not found.", ephemeral=True)
 
 @bot.event
 async def on_interaction(interaction: discord.Interaction):
@@ -104,17 +92,9 @@ async def on_interaction(interaction: discord.Interaction):
                     await interaction.response.defer()
                     await channel.send(embed=embed)
                 else:
-                    await interaction.response.defer()
-                    channel = bot.get_channel(1156180116024590396)
-                    message = await channel.send("You need to be in a voice channel to use this command. " + interaction.user.mention)
-                    await asyncio.sleep(10)
-                    await message.delete()
+                    await interaction.response.send_message("You need to be in a voice channel to use this command.", ephemeral=True)
             else:
-                await interaction.response.defer()
-                channel = bot.get_channel(1155946685676146709)
-                message = await channel.send("You need to be in a voice channel to use this command. " + interaction.user.mention)
-                await asyncio.sleep(10)
-                await message.delete()
+                await interaction.response.send_message("You need to be in a voice channel to use this command.", ephemeral=True)
 
 @bot.event
 async def on_ready():
