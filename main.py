@@ -55,15 +55,19 @@ async def addbutton(
 
 @bot.tree.command(name="removebutton", description="Remove an existing game button")
 @app_commands.describe(game="The game button to remove")
-@app_commands.choices(game=[
-    app_commands.Choice(name=game, value=game) for game in games.keys()
-])
 async def removebutton(interaction: discord.Interaction, game: str):
     if game in games:
         del games[game]
         await interaction.response.send_message(f"Removed game button: {game}", ephemeral=True)
     else:
         await interaction.response.send_message(f"Game button {game} not found.", ephemeral=True)
+
+@removebutton.autocomplete('game')
+async def removebutton_autocomplete(interaction: discord.Interaction, current: str):
+    return [
+        app_commands.Choice(name=game, value=game)
+        for game in games.keys() if current.lower() in game.lower()
+    ][:25]
 
 @bot.event
 async def on_interaction(interaction: discord.Interaction):
